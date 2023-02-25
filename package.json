@@ -17,7 +17,14 @@
     "url": "https://github.com/truongtuanphat/cypress-project/issues"
   },
   "homepage": "https://github.com/truongtuanphat/cypress-project#readme",
-  "devDependencies": {
-    "cypress": "^12.6.0"
-  }
+  "dependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^15.1.4",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0",
+    "@cypress/browserify-preprocessor": "^3.0.2",
+    "cypress": "^12.7.0"
+  },
+  "stepDefinitions": [
+    "cypress/e2e/*.{js,ts}",
+    "cypress/support/step_definitions/*.{js,ts}"
+  ]
 }
