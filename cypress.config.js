@@ -12,15 +12,17 @@ async function setupNodeEvents(on, config) {
 module.exports = defineConfig({
   projectId: 'c8ue4u',
   // Config cypress here
-  // defaultCommandTimeout: 5000
+  watchForFileChanges: false,
 
   env:{
-    baseUrl: 'https://www.google.com',
+    baseUrl: 'https://gtoportal-uat.capitaland.com/#/user/login/tenant',
+    email: 'auto-sit@yopmail.com',
+    password: '12351235T@m'
   },
   
   e2e:
   {
     setupNodeEvents,
     specPattern: 'cypress/e2e/*.feature'
-  },
+  }
 })

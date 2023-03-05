@@ -23,3 +23,12 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('login', (email, password) => {
+  cy.contains('Log in as Tenant').click()
+  cy.origin('https://gtoplatformuat.b2clogin.com', { args: { email: email, password: password } }, ({ email, password }) => {
+    cy.get('#email').type(email)
+    cy.get('#password').type(password).type('{enter}')
+    cy.contains('Send verification code').should('be.visible')
+  })
+})

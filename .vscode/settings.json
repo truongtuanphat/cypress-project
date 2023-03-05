@@ -1,4 +1,3 @@
-//Move this file under .vscode folder
 {
     "cucumberautocomplete.steps": [
         "cypress/support/*.js",

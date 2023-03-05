@@ -1,4 +1,5 @@
 Feature: Test feature
 
   Scenario: Test scenario
-    And I open web application
+    Given I login with default user
+    
