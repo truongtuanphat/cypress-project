@@ -15,7 +15,7 @@ module.exports = defineConfig({
   watchForFileChanges: false,
 
   env:{
-    baseUrl: 'https://gtoportal-uat.capitaland.com/#/user/login/tenant',
+    baseUrl: 'https://gtoportal-uat.capitaland.com',
     email: 'auto-sit@yopmail.com',
     password: '12351235T@m'
   },
