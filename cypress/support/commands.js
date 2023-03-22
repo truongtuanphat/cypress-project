@@ -24,11 +24,51 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+const tempMailHost = Cypress.env('tempMailHost')
+const mailsacKey = Cypress.env('mailsacKey')
+
 Cypress.Commands.add('login', (email, password) => {
   cy.contains('Log in as Tenant').click()
   cy.origin('https://gtoplatformuat.b2clogin.com', { args: { email: email, password: password } }, ({ email, password }) => {
     cy.get('#email').type(email)
     cy.get('#password').type(password).type('{enter}')
-    cy.contains('Send verification code').should('be.visible')
+    cy.contains('Send verification code').click()
+  })
+})
+
+Cypress.Commands.add('getMailsacId', (email, timeout = 10000, interval = 2000) => {
+  if (timeout <= 0) {
+    assert.fail('Timeout exceeded while waiting for mailsacId')
+  }
+  return cy.request({
+    method: 'GET',
+    url: `${tempMailHost}/api/addresses/${email}/messages`,
+    headers: {
+      'Mailsac-Key': `${mailsacKey}`
+    },
+  }).then((res) => {
+    if (res.body.length > 0 && res.body[0]._id) {
+      return cy.wrap(res.body[0]._id)
+    } else {
+      return new Promise(resolve => setTimeout(resolve, interval))
+        .then(() => cy.getMailsacId(email, timeout - interval, interval))
+    }
+  })
+})
+
+Cypress.Commands.add('GetVerificationCode', (email, mailsacId) => {
+  cy.request({
+    method: 'GET',
+    url: `${tempMailHost}/api/text/${email}/${mailsacId}`,
+    headers: {
+      'Mailsac-Key': `${mailsacKey}`
+    }
+  }).then((res) => {
+    if (res.status == 200) {
+      const regexp = /Your code is: (\d+)/;
+      const matches = res.body.match(regexp);
+      const verificationCode = matches[1]
+      return cy.wrap(verificationCode)
+    }
   })
 })

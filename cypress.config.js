@@ -12,12 +12,16 @@ async function setupNodeEvents(on, config) {
 module.exports = defineConfig({
   projectId: 'c8ue4u',
   // Config cypress here
+  defaultCommandTimeout: 10000,
   watchForFileChanges: false,
 
   env:{
     baseUrl: 'https://gtoportal-uat.capitaland.com',
-    email: 'auto-sit@yopmail.com',
-    password: '12351235T@m'
+    email: 'auto-sit@mailsac.com',
+    password: '12351235T@m',
+
+    tempMailHost: 'https://mailsac.com',
+    mailsacKey: 'k_f3ElHHF9ALb34FnNW3K52eDxyUelntWtVe'
   },
   
   e2e:
