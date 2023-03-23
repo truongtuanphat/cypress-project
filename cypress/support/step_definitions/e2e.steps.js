@@ -9,9 +9,10 @@ Given('I login with default user', () => {
   cy.login(defaultEmail, defaultPassword)
   cy.getMailsacId('auto-sit@mailsac.com')
     .then((mailsacId) => {
-      cy.GetVerificationCode(defaultEmail, mailsacId)
+      cy.getVerificationCode(defaultEmail, mailsacId)
         .then((verificationCode) => {
-          
+          cy.enterVerificationCode(verificationCode)
+          cy.deleteMail(defaultEmail, mailsacId)
         })
     })
 })

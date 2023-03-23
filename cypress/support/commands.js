@@ -36,6 +36,12 @@ Cypress.Commands.add('login', (email, password) => {
   })
 })
 
+Cypress.Commands.add('enterVerificationCode', (code) => {
+  cy.origin('https://gtoplatformuat.b2clogin.com', { args: { code: code } }, ({ code }) => {
+    cy.get('.verifyInput').type(code + '{enter}')
+  })
+})
+
 Cypress.Commands.add('getMailsacId', (email, timeout = 10000, interval = 2000) => {
   if (timeout <= 0) {
     assert.fail('Timeout exceeded while waiting for mailsacId')
@@ -46,8 +52,8 @@ Cypress.Commands.add('getMailsacId', (email, timeout = 10000, interval = 2000) =
     headers: {
       'Mailsac-Key': `${mailsacKey}`
     },
-  }).then((res) => {
-    if (res.body.length > 0 && res.body[0]._id) {
+  }).then(res => {
+    if (res.body[0]?._id) {
       return cy.wrap(res.body[0]._id)
     } else {
       return new Promise(resolve => setTimeout(resolve, interval))
@@ -56,19 +62,31 @@ Cypress.Commands.add('getMailsacId', (email, timeout = 10000, interval = 2000) =
   })
 })
 
-Cypress.Commands.add('GetVerificationCode', (email, mailsacId) => {
+Cypress.Commands.add('getVerificationCode', (email, mailsacId) => {
   cy.request({
     method: 'GET',
     url: `${tempMailHost}/api/text/${email}/${mailsacId}`,
     headers: {
       'Mailsac-Key': `${mailsacKey}`
     }
-  }).then((res) => {
+  }).then(res => {
     if (res.status == 200) {
       const regexp = /Your code is: (\d+)/;
       const matches = res.body.match(regexp);
       const verificationCode = matches[1]
       return cy.wrap(verificationCode)
     }
+  })
+})
+
+Cypress.Commands.add('deleteMail', (email, mailsacId) => {
+  cy.request({
+    method: 'DELETE',
+    url: `${tempMailHost}/api/addresses/${email}/messages/${mailsacId}`,
+    headers: {
+      'Mailsac-Key': `${mailsacKey}`
+    }
+  }).then(res => {
+    expect(res.status).to.eq(200)
   })
 })
