@@ -1,7 +1,7 @@
 Feature: Test feature
 
   Scenario Outline: Test scenario
-    Given I login into portal with default user
+    Given I navigate to the 'home-page' page
     When I click element with text '<page-name>'
     Then I am on the '<path>' page
     Examples:

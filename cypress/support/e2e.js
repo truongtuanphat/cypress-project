@@ -20,8 +20,14 @@ import './commands'
 // require('./commands')
 
 const baseUrl = Cypress.env('baseUrl')
+const defaultEmail = Cypress.env('email')
+const defaultPassword = Cypress.env('password')
 
-Cypress.Commands.add('loginIntoPortal', (email, password) => {
+beforeEach(() => {
+  cy.logInToPortalWithDefaultUserSession(defaultEmail, defaultPassword)
+})
+
+Cypress.Commands.add('logInToPortal', (email, password) => {
   cy.getAllMessageIds(email)
     .then(listId => {
       for (const id of listId) {
@@ -40,4 +46,10 @@ Cypress.Commands.add('loginIntoPortal', (email, password) => {
           cy.url({ timeout: 30000 }).should('contain', '/sit/#/home-page')
         })
     })  
+})
+
+Cypress.Commands.add('logInToPortalWithDefaultUserSession', (email, password) => {
+  cy.session([email, password], () => {
+    cy.logInToPortal(email, password)
+  })
 })
