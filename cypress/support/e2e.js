@@ -18,3 +18,26 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+const baseUrl = Cypress.env('baseUrl')
+
+Cypress.Commands.add('loginIntoPortal', (email, password) => {
+  cy.getAllMessageIds(email)
+    .then(listId => {
+      for (const id of listId) {
+        cy.deleteAllMails(email, id)
+      }
+    })
+  cy.visit(baseUrl + '/sit/#/user/login/tenant')
+  cy.login(email, password)
+  cy.getmessageId(email)
+    .then(messageId => {
+      cy.getVerificationCode(email, messageId)
+        .then(verificationCode => {
+          cy.enterInputInSubUrl('.verifyInput', verificationCode)
+          cy.clickElementInSubUrl('.verifyButton')
+          cy.wait(1000).clickElementInSubUrl('#continue')
+          cy.url({ timeout: 30000 }).should('contain', '/sit/#/home-page')
+        })
+    })  
+})

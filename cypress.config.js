@@ -17,6 +17,7 @@ module.exports = defineConfig({
 
   env:{
     baseUrl: 'https://gtoportal-uat.capitaland.com',
+    subUrl: 'https://gtoplatformuat.b2clogin.com',
     email: 'gto-auto-sit@mailsac.com',
     password: '12351235T@m',
 

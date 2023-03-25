@@ -1,18 +1,8 @@
 import { When, Then, Given } from "@badeball/cypress-cucumber-preprocessor";
 
-const baseUrl = Cypress.env('baseUrl')
 const defaultEmail = Cypress.env('email')
 const defaultPassword = Cypress.env('password')
 
-Given('I login with default user', () => {
-  cy.visit(baseUrl)
-  cy.login(defaultEmail, defaultPassword)
-  cy.getMailsacId('auto-sit@mailsac.com')
-    .then((mailsacId) => {
-      cy.getVerificationCode(defaultEmail, mailsacId)
-        .then((verificationCode) => {
-          cy.enterVerificationCode(verificationCode)
-          cy.deleteMail(defaultEmail, mailsacId)
-        })
-    })
+Given('I login into portal with default user', () => {
+  cy.loginIntoPortal(defaultEmail, defaultPassword)
 })

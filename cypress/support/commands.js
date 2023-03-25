@@ -26,25 +26,32 @@
 
 const tempMailHost = Cypress.env('tempMailHost')
 const mailsacKey = Cypress.env('mailsacKey')
+const subUrl = Cypress.env('subUrl')
 
 Cypress.Commands.add('login', (email, password) => {
   cy.contains('Log in as Tenant').click()
-  cy.origin('https://gtoplatformuat.b2clogin.com', { args: { email: email, password: password } }, ({ email, password }) => {
+  cy.origin(subUrl, { args: { email, password } }, ({ email, password }) => {
     cy.get('#email').type(email)
     cy.get('#password').type(password).type('{enter}')
     cy.contains('Send verification code').click()
   })
 })
 
-Cypress.Commands.add('enterVerificationCode', (code) => {
-  cy.origin('https://gtoplatformuat.b2clogin.com', { args: { code: code } }, ({ code }) => {
-    cy.get('.verifyInput').type(code + '{enter}')
+Cypress.Commands.add('enterInputInSubUrl', (inputElement, inputValue) => {
+  cy.origin(subUrl, { args: { inputElement, inputValue } }, ({ inputElement, inputValue }) => {
+    cy.get(inputElement).type(inputValue)
   })
 })
 
-Cypress.Commands.add('getMailsacId', (email, timeout = 10000, interval = 2000) => {
+Cypress.Commands.add('clickElementInSubUrl', (element, isForce = false) => {
+  cy.origin(subUrl, { args: { element, isForce } }, ({ element, isForce }) => {
+    cy.get(element).click({ force: isForce })
+  })
+})
+
+Cypress.Commands.add('getmessageId', (email, timeout = 20000, interval = 2000) => {
   if (timeout <= 0) {
-    assert.fail('Timeout exceeded while waiting for mailsacId')
+    assert.fail('Timeout exceeded while waiting for messageId')
   }
   return cy.request({
     method: 'GET',
@@ -57,32 +64,47 @@ Cypress.Commands.add('getMailsacId', (email, timeout = 10000, interval = 2000) =
       return cy.wrap(res.body[0]._id)
     } else {
       return new Promise(resolve => setTimeout(resolve, interval))
-        .then(() => cy.getMailsacId(email, timeout - interval, interval))
+        .then(cy.getmessageId(email, timeout - interval, interval))
     }
   })
 })
 
-Cypress.Commands.add('getVerificationCode', (email, mailsacId) => {
+Cypress.Commands.add('getVerificationCode', (email, messageId) => {
   cy.request({
     method: 'GET',
-    url: `${tempMailHost}/api/text/${email}/${mailsacId}`,
+    url: `${tempMailHost}/api/text/${email}/${messageId}`,
     headers: {
       'Mailsac-Key': `${mailsacKey}`
     }
   }).then(res => {
-    if (res.status == 200) {
-      const regexp = /Your code is: (\d+)/;
-      const matches = res.body.match(regexp);
-      const verificationCode = matches[1]
-      return cy.wrap(verificationCode)
-    }
+    expect(res.status).to.eq(200)
+    const regexp = /Your code is: (\d+)/;
+    const matches = res.body.match(regexp);
+    const verificationCode = matches[1]
+    return cy.wrap(verificationCode)
   })
 })
 
-Cypress.Commands.add('deleteMail', (email, mailsacId) => {
+Cypress.Commands.add('getAllMessageIds', email => {
+  let listId = []
+  cy.request({
+    method: 'GET',
+    url: `${tempMailHost}/api/addresses/${email}/messages`,
+    headers: {
+      'Mailsac-Key': `${mailsacKey}`
+    }
+  }).then(res => {
+    for (const message of res.body) {
+      listId.push(message._id);
+    }
+    return listId
+  })
+})
+
+Cypress.Commands.add('deleteAllMails', (email, messageId) => {
   cy.request({
     method: 'DELETE',
-    url: `${tempMailHost}/api/addresses/${email}/messages/${mailsacId}`,
+    url: `${tempMailHost}/api/addresses/${email}/messages/${messageId}`,
     headers: {
       'Mailsac-Key': `${mailsacKey}`
     }
