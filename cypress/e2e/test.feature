@@ -1,4 +1,4 @@
 Feature: Test feature
 
   Scenario: Test scenario
-    And I open web application2
+    And I open web application
