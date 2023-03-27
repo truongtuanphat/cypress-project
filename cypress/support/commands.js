@@ -86,7 +86,6 @@ Cypress.Commands.add('getVerificationCode', (email, messageId) => {
 })
 
 Cypress.Commands.add('getAllMessageIds', email => {
-  let listId = []
   cy.request({
     method: 'GET',
     url: `${tempMailHost}/api/addresses/${email}/messages`,
@@ -94,10 +93,7 @@ Cypress.Commands.add('getAllMessageIds', email => {
       'Mailsac-Key': `${mailsacKey}`
     }
   }).then(res => {
-    for (const message of res.body) {
-      listId.push(message._id);
-    }
-    return listId
+    return res.body.map(res => res._id)
   })
 })
 
