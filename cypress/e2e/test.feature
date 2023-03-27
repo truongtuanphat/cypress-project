@@ -11,7 +11,8 @@ Feature: Test feature
   @focus
   Scenario: Test scenario
     Given I navigate to the 'sales/ntd-request' page
-    When I select option 'Junction 8' in the 'Property Name' dropdown
+    When I select Sales Month from '2023-02' to '2023-05'
+    And I select option 'Junction 8' in the 'Property Name' dropdown
     And I select option 'All' in the 'Contract Name' dropdown
     And I select option 'All' in the 'Unit No' dropdown
     And I select option 'All' in the 'Status' dropdown

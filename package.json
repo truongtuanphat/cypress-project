@@ -18,9 +18,9 @@
   },
   "homepage": "https://github.com/truongtuanphat/cypress-project#readme",
   "dependencies": {
-    "@badeball/cypress-cucumber-preprocessor": "^15.1.4",
+    "@badeball/cypress-cucumber-preprocessor": "^16.0.0",
     "@cypress/browserify-preprocessor": "^3.0.2",
-    "cypress": "^12.7.0"
+    "cypress": "^12.8.1"
   },
   "stepDefinitions": [
     "cypress/e2e/*.{js,ts}",
