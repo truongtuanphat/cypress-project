@@ -13,8 +13,7 @@ Given('I navigate to the {string} page', (path) => {
   cy.wait('@authentication').its('response.statusCode').then(value => {
     if (value === 401) {
       Cypress.session.clearAllSavedSessions()
-      // assert.fail('Session expired\nCleared all saved sessions automatically\nJust retry')
-      document.getElementsByClassName('clear-sessions').click()
+      assert.fail('Session expired\nCleared all saved sessions automatically\nJust retry')
     }
   })
 })

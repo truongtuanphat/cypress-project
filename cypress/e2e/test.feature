@@ -11,9 +11,10 @@ Feature: Test feature
   @focus
   Scenario: Test scenario
     Given I navigate to the 'sales/ntd-request' page
-    When I select Sales Month from '2023-02' to '2023-05'
-    And I select option 'Junction 8' in the 'Property Name' dropdown
-    And I select option 'All' in the 'Contract Name' dropdown
-    And I select option 'All' in the 'Unit No' dropdown
-    And I select option 'All' in the 'Status' dropdown
+    When I select Sales Month from '2023-01' to '2023-05'
+    And I select option 'All' in the 'Property Name' dropdown
+    And I select option 'All' in the 'Contract name' dropdown
+    And I select option 'All' in the 'unit No' dropdown
+    And I select option 'All' in the 'status' dropdown
     And I click search button
+    And I click the cell in row 2 and column 'Request ID'
