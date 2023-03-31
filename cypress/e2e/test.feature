@@ -8,7 +8,7 @@ Feature: Test feature
       | page-name                       | path                                                  |
       | GTO Sales Overview              | /sit/#/gto-submission/gto-sales-overview              |
       | Update GTO Sales Entry By Month | /sit/#/gto-submission/update-gto-sales-entry-by-month |
-  @focus
+
   Scenario: Test scenario
     Given I navigate to the 'sales/ntd-request' page
     When I select Sales Month from '2023-01' to '2023-05'
@@ -18,3 +18,9 @@ Feature: Test feature
     And I select option 'All' in the 'status' dropdown
     And I click search button
     And I click the cell in row 2 and column 'Request ID'
+    Then The row with text '03/01/2023' in table should have below values:
+      | column              | value                                   |
+      | Unit No             | 04-01/02E                               |
+      | Current NTD Status  | Yes                                     |
+      | Adjusted NTD        | No                                      |
+      | NTD Reason Code     | 2 - Closed for renovation/ fitting out  |
