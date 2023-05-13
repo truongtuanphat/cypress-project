@@ -14,7 +14,8 @@ module.exports = defineConfig({
   // Config cypress here
   defaultCommandTimeout: 10000,
   watchForFileChanges: false,
-
+  videoUploadOnPasses: false,
+  
   env:{
     baseUrl: 'https://gtoportal-uat.capitaland.com',
     subUrl: 'https://gtoplatformuat.b2clogin.com',
