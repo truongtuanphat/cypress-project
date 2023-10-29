@@ -1,7 +1,9 @@
 # cypress-project
 
-npm install
+Setup: npm install
 
-Install Cucumber (Gherkin) Full Support extension
+Run: npx cypress open
 
-npx cypress open
+Install some useful Extensions:
+- Cucumber (Gherkin) Full Support extension
+- Cypress Helper
