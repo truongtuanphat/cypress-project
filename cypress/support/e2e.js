@@ -25,7 +25,7 @@ const defaultPassword = Cypress.env('password');
 
 beforeEach(() => {
 	Cypress.on('uncaught:exception', (err) => !err.message.includes('ResizeObserver loop limit exceeded')); //Ignore error
-	cy.logInToPortalWithDefaultUserSession(defaultEmail, defaultPassword);
+	// cy.logInToPortalWithDefaultUserSession(defaultEmail, defaultPassword);
 });
 
 Cypress.Commands.add('logInToPortal', (email, password) => {

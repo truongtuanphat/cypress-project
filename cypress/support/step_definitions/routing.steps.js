@@ -19,3 +19,7 @@ Given('I navigate to the {string} page', (path) => {
 			}
 		});
 });
+
+Given('test', () => {
+	cy.visit(`https://www.google.com/`);
+});
