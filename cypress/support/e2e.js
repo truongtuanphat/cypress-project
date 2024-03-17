@@ -14,43 +14,20 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './commands';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-const baseUrl = Cypress.env('baseUrl')
-const defaultEmail = Cypress.env('email')
-const defaultPassword = Cypress.env('password')
+const baseUrl = Cypress.env('baseUrl');
+const defaultUsername = Cypress.env('username');
+const defaultPassword = Cypress.env('password');
 
-beforeEach(() => {
-  Cypress.on('uncaught:exception', (err) => !err.message.includes('ResizeObserver loop limit exceeded')) //Ignore error
-  cy.logInToPortalWithDefaultUserSession(defaultEmail, defaultPassword)
-})
+beforeEach(() => {});
 
-Cypress.Commands.add('logInToPortal', (email, password) => {
-  cy.getAllMessageIds(email)
-    .then(listId => {
-      for (const id of listId) {
-        cy.deleteAllMails(email, id)
-      }
-    })
-  cy.visit(baseUrl + '/sit/#/user/login/tenant')
-  cy.login(email, password)
-  cy.getmessageId(email)
-    .then(messageId => {
-      cy.getVerificationCode(email, messageId)
-        .then(verificationCode => {
-          cy.enterInputInSubUrl('.verifyInput', verificationCode)
-          cy.clickElementInSubUrl('.verifyButton')
-          cy.wait(1000).clickElementInSubUrl('#continue')
-          cy.url({ timeout: 30000 }).should('contain', '/sit/#/home-page')
-        })
-    })  
-})
-
-Cypress.Commands.add('logInToPortalWithDefaultUserSession', (email, password) => {
-  cy.session([email, password], () => {
-    cy.logInToPortal(email, password)
-  })
-})
+Cypress.Commands.add('logInToItilWithDefaultUser', () => {
+	cy.visit(baseUrl);
+	cy.intercept('GET', `/api/now/ui/polaris/menu`).as('completedLoadingPage');
+	cy.login(defaultUsername, defaultPassword);
+	cy.wait('@completedLoadingPage', { timeout: 60000 });
+});

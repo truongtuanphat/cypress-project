@@ -1,9 +1,9 @@
-import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
 
-When('I click element with text {string}', (text) => {
-  cy.contains(text).click()
-})
+When('I click the {string} element', (element) => {
+	cy.get(`[data-id="${element}"]`).click();
+});
 
-When('I click search button', () => {
-  cy.get('.anticon-search').click()
-})
+When('The {string} element should {string}', (element, assertion) => {
+	cy.get(`[data-id="${element}"]`).should(assertion.replaceAll('.', ''));
+});
