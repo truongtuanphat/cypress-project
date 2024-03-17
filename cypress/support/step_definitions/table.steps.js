@@ -1,4 +1,10 @@
 import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
+import '../commands.js';
+
+Then('The {string} table should {string}', (tableName, assertion) => {
+	cy.waitForTableLoaded();
+	cy.iframe().find(`table[data-list_id="${tableName}"]`).should(assertion.replaceAll(' ', '.'));
+});
 
 // When('I click the cell in row {int} and column {string}', (rowIndex, columnName) => {
 // 	cy.contains('th', columnName)
@@ -12,9 +18,3 @@ import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
 // 				.click();
 // 		});
 // });
-
-Then('I wait for the table to show', () => {
-	cy.intercept(`/api/now/ui/page_timing/*`).as('completedLoadingTable');
-	cy.wait('@completedLoadingTable', { timeout: 60000 });
-	cy.get(`button[aria-label="Response Time"]`).should('exist');
-});

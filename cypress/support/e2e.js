@@ -13,17 +13,12 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
-// Import commands.js using ES2015 syntax:
 import './commands';
-
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+import 'cypress-iframe';
 
 const baseUrl = Cypress.env('baseUrl');
 const defaultUsername = Cypress.env('username');
 const defaultPassword = Cypress.env('password');
-
-beforeEach(() => {});
 
 Cypress.Commands.add('logInToItilWithDefaultUser', () => {
 	cy.visit(baseUrl);

@@ -25,6 +25,11 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('login', (username, password) => {
-  cy.get('#user_name').type(username)
-  cy.get('#user_password').type(password + '{enter}')
-})
+	cy.get('#user_name').type(username);
+	cy.get('#user_password').type(password + '{enter}');
+});
+
+Cypress.Commands.add('waitForTableLoaded', () => {
+	cy.intercept(`/api/now/ui/page_timing/*`).as('completedLoadingTable');
+	cy.wait('@completedLoadingTable', { timeout: 60000 });
+});

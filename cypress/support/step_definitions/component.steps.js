@@ -5,7 +5,3 @@ When('I search for {string} in the menu', (value) => {
 		.clear()
 		.type(value + '{enter}');
 });
-
-When('The {string} table should {string}', (tableName, assertion) => {
-	cy.get(`table[data-list_id="${tableName}"]`, { timeout: 60000 }).should(assertion.replaceAll(' ', '.'));
-});
